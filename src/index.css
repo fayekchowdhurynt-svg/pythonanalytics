@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+@theme {
+  /* Color system: dark analytics-terminal palette.
+     Signature accent is a terminal amber (#E8A33D) — evokes trading-floor
+     and data-terminal readouts, distinct from generic AI-app defaults. */
+  --color-bg: #0b0e14;
+  --color-surface: #121722;
+  --color-surface-raised: #171d2b;
+  --color-border: #232b3d;
+  --color-text: #e7eaf2;
+  --color-text-muted: #8a93ab;
+  --color-accent: #e8a33d;
+  --color-accent-dim: #b98131;
+  --color-positive: #34d399;
+  --color-negative: #f0665a;
+  --color-code-bg: #0d1117;
+
+  --font-display: "Space Grotesk", "Inter", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
+}
+
+@layer base {
+  html {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    color-scheme: dark;
+  }
+  body {
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection {
+    background-color: var(--color-accent);
+    color: var(--color-bg);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* Row-number style step index, used only where step order is real
+   (lesson flow, guided-example lines) — not decorative numbering. */
+.row-index {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+}
