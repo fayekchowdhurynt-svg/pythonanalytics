@@ -9,18 +9,20 @@ interface CodeEditorProps {
 
 export function CodeEditor({ starterCode, onRun, isRunning }: CodeEditorProps) {
   const [code, setCode] = useState(starterCode);
+  const [editorKey, setEditorKey] = useState(0);
 
-  const handleReset = () => setCode(starterCode);
+  const handleReset = () => {
+    setCode(starterCode);
+    setEditorKey((k) => k + 1);
+  };
 
   const handleFormat = () => {
-    // Lightweight formatter: normalize indentation to 4 spaces, trim
-    // trailing whitespace. A full formatter (black-via-pyodide) is a
-    // reasonable future upgrade; this keeps the button honest for now.
     const formatted = code
       .split("\n")
-      .map((line) => line.replace(/\s+$/, ""))
+      .map((line) => line.replace(/\s+$/, "").replace(/\t/g, "    "))
       .join("\n");
     setCode(formatted);
+    setEditorKey((k) => k + 1);
   };
 
   return (
@@ -50,10 +52,11 @@ export function CodeEditor({ starterCode, onRun, isRunning }: CodeEditorProps) {
         </div>
       </div>
       <Editor
+        key={editorKey}
         height="280px"
         defaultLanguage="python"
         theme="vs-dark"
-        value={code}
+        defaultValue={code}
         onChange={(val) => setCode(val ?? "")}
         options={{
           fontFamily: "JetBrains Mono, monospace",
