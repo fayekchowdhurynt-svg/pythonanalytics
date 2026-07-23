@@ -50,7 +50,19 @@ export function LessonPage() {
         {step === 1 && <BusinessScenarioCard scenario={lesson.businessScenario} />}
         {step === 2 && <GuidedWalkthrough lines={lesson.guidedExample} />}
         {step === 3 && (
-          <ChallengePanel challenge={lesson.challenge} onPassed={() => setPassed(true)} />
+          <div className="space-y-2">
+            <ChallengePanel challenge={lesson.challenge} onPassed={() => setPassed(true)} />
+            {!passed && (
+              <div className="flex gap-4 text-xs text-[var(--color-text-muted)] pt-1">
+                <button onClick={() => setStep(4)} className="underline hover:text-[var(--color-text)]">
+                  Stuck? View hints
+                </button>
+                <button onClick={() => setStep(5)} className="underline hover:text-[var(--color-text)]">
+                  Show me the solution
+                </button>
+              </div>
+            )}
+          </div>
         )}
         {step === 4 && <HintPanel hints={lesson.challenge.hints} />}
         {step === 5 && <SolutionReveal challenge={lesson.challenge} />}
@@ -70,18 +82,12 @@ export function LessonPage() {
         >
           ← Back
         </button>
-        {step === 3 && !passed ? (
-          <span className="text-xs text-[var(--color-text-muted)]">
-            Pass the challenge to continue
-          </span>
-        ) : (
-          <button
-            onClick={goNext}
-            className="text-sm px-5 py-2 rounded-md bg-[var(--color-accent)] text-[var(--color-bg)] font-semibold hover:bg-[var(--color-accent-dim)] transition-colors"
-          >
-            {step === STEPS.length - 1 ? "Finish lesson" : "Continue →"}
-          </button>
-        )}
+        <button
+          onClick={goNext}
+          className="text-sm px-5 py-2 rounded-md bg-[var(--color-accent)] text-[var(--color-bg)] font-semibold hover:bg-[var(--color-accent-dim)] transition-colors"
+        >
+          {step === STEPS.length - 1 ? "Finish lesson" : "Continue →"}
+        </button>
       </div>
     </div>
   );
