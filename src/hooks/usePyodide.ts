@@ -16,11 +16,6 @@ export interface RunResult {
   error: string | null;
 }
 
-/**
- * Lazily spins up the Pyodide worker on first run() call (not on mount) so
- * the initial page load stays fast — the ~10-15MB runtime only downloads
- * once a student actually reaches a coding challenge.
- */
 export function usePyodide() {
   const workerRef = useRef<Worker | null>(null);
   const pendingRef = useRef<Map<string, (result: RunResult) => void>>(new Map());
@@ -29,9 +24,7 @@ export function usePyodide() {
 
   const getWorker = useCallback(() => {
     if (!workerRef.current) {
-      workerRef.current = new Worker(new URL("../services/pyodide.worker.ts", import.meta.url), {
-        type: "module",
-      });
+      workerRef.current = new Worker(new URL("../services/pyodide.worker.ts", import.meta.url));
       workerRef.current.onmessage = (event: MessageEvent) => {
         const msg = event.data;
         if (msg.type === "status") {
